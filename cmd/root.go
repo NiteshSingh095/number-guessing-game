@@ -25,7 +25,7 @@ func Execute() {
 
 		randomNumber := game.GenerateRandomNumber(maxNumber)
 
-		game.PlayGame(attempts, randomNumber)
+		game.PlayGame(attempts, randomNumber, level)
 
 		fmt.Println("\nDo you want to play again? (y/n): ")
 		playAgain := input.ReadUserInputString("")

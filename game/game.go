@@ -5,15 +5,21 @@ import (
 	"time"
 	"math/rand"
 	"number-guessing-game/utils"
+	"number-guessing-game/internal/storage"
 )
 
 
 /// playGame is the main game loop that handles user guesses and provides feedback until the user either guesses correctly or exhausts all attempts.
-func PlayGame(attempts int, randomNumber int) {
+func PlayGame(attempts int, randomNumber int, difficulty string) {
 	guessCorrectly := false
 	start := time.Now()
 	cnt := 0
 	wrongAttempts := 0
+	hs, error := storage.LoadHighScore()
+	if error != nil {
+		fmt.Printf("Error loading high score: %v\n", error)
+		return
+	}
 
 	for i := 0; i < attempts; i++ {
 		fmt.Printf("Attempt %d/%d: Enter your guess: ", i+1, attempts)
@@ -41,6 +47,11 @@ func PlayGame(attempts int, randomNumber int) {
 		fmt.Printf("Game Over! The correct number was %d.\n", randomNumber)
 	} else {
 		elapsed := time.Since(start)
+		storage.UpdateHighScore(&hs, difficulty, cnt)
+		err := storage.SaveHighScore(hs)
+		if err != nil {
+			fmt.Printf("Error saving high score: %v\n", err)
+		}
 		fmt.Printf("You guessed the number in %d attempts and %s!\n", cnt, elapsed.Round(time.Second))
 	}
 }

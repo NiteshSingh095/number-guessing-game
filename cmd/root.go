@@ -6,6 +6,8 @@ import (
 	"number-guessing-game/utils"
 )
 
+const maxNumber = 100
+
 func Execute() {
 	for {
 
@@ -21,7 +23,7 @@ func Execute() {
 
 		fmt.Printf("You have selected %s difficulty. You will have %d attempts to guess the number.\n", level, attempts)
 
-		randomNumber := game.GenerateRandomNumber()
+		randomNumber := game.GenerateRandomNumber(maxNumber)
 
 		game.PlayGame(attempts, randomNumber)
 
